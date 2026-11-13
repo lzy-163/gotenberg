@@ -1,0 +1,235 @@
+name: BFP isolated verification 599aa0381f79
+'on':
+  push:
+    branches:
+    - bfp-isolated-599aa0381f79
+permissions: {}
+jobs:
+  buggy_merge_clean_snapshot_guard:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  buggy_snapshot_386:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  buggy_snapshot_amd64:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  buggy_snapshot_arm64:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  buggy_snapshot_arm_v7:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  buggy_merge_clean_snapshot_tags:
+    runs-on: ubuntu-latest
+    needs:
+    - buggy_merge_clean_snapshot_guard
+    steps:
+    - name: Read snapshot_386 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: buggy_snapshot_386
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+    - name: Read snapshot_amd64 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: buggy_snapshot_amd64
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+    - name: Read snapshot_arm64 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: buggy_snapshot_arm64
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+    - name: Read snapshot_arm_v7 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: buggy_snapshot_arm_v7
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+  human_merge_clean_snapshot_guard:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  human_snapshot_386:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  human_snapshot_amd64:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  human_snapshot_arm64:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  human_snapshot_arm_v7:
+    runs-on: ubuntu-latest
+    outputs:
+      probe: ${{ steps.write.outputs.probe }}
+    steps:
+    - id: write
+      run: echo "probe=available" >> "$GITHUB_OUTPUT"
+  human_merge_clean_snapshot_tags:
+    runs-on: ubuntu-latest
+    needs:
+    - human_merge_clean_snapshot_guard
+    - human_snapshot_amd64
+    - human_snapshot_386
+    - human_snapshot_arm64
+    - human_snapshot_arm_v7
+    steps:
+    - name: Read snapshot_386 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: human_snapshot_386
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+    - name: Read snapshot_amd64 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: human_snapshot_amd64
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+    - name: Read snapshot_arm64 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: human_snapshot_arm64
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
+    - name: Read snapshot_arm_v7 output
+      if: ${{ !cancelled() }}
+      env:
+        NEEDS_JSON: ${{ toJSON(needs) }}
+        PRODUCER: human_snapshot_arm_v7
+      run: 'python - <<''PY''
+
+        import json, os
+
+        needs = json.loads(os.environ[''NEEDS_JSON''])
+
+        value = needs.get(os.environ[''PRODUCER''], {}).get(''outputs'', {}).get(''probe'')
+
+        print(f''producer output={value!r}'')
+
+        raise SystemExit(value != ''available'')
+
+        PY'
